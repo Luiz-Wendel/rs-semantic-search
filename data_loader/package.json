@@ -1,0 +1,32 @@
+{
+  "name": "data_loader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "private": false,
+  "engines": {
+    "node": ">= 14.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": "",
+  "keywords": [],
+  "author": {
+    "name": "Luiz Wendel"
+  },
+  "scripts": {
+    "db:vector:load": "node load-data.js",
+    "db:vector:test": "node test-db.js"
+  },
+  "dependencies": {
+    "@chroma-core/default-embed": "^0.1.9",
+    "chromadb": "^3.5.0",
+    "csv-parser": "^3.2.1"
+  }
+}
