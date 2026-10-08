@@ -4,13 +4,41 @@
 }
 
 .movie-list {
-  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin: 2em 0.5em;
 }
 
 .movie-card {
+  align-items: center;
   border: 1px solid lightgrey;
-  margin-bottom: 1em;
-  padding: 0.5em;
-  width: 100%;
+  border-radius: 0.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
   height: 5em;
+  min-height: 15em;
+  padding: 0.5em;
+}
+
+.movie-title {
+  margin: 0;
+}
+
+.movie-tags {
+  display: flex;
+  gap: 0.5em;
+}
+
+.movie-tag {
+  border: 1px solid lightgrey;
+  border-radius: 1em;
+  font-size: 0.75em;
+  padding: 0 0.5em;
+}
+
+.movie-synopsis {
+  overflow: auto;
+  padding: 0.5em;
 }
