@@ -1,10 +1,14 @@
 import react from 'react'
 
-import { ChromaClient } from "chromadb"
+// components
+import MovieCard from './components/MovieCard'
+import LoadingIndicator from './components/LoadingIndicator'
+import ErrorIndicator from './components/ErrorIndicator'
+// database
+import useChroma from './database/init'
+import { getMovies } from './database/query'
 
 import './App.css'
-
-const LOADING_URL = "https://cdn.pixabay.com/animation/2023/08/11/21/18/21-18-05-265_512.gif"
 
 // const mockMovies = [
 //   {
@@ -59,89 +63,29 @@ const LOADING_URL = "https://cdn.pixabay.com/animation/2023/08/11/21/18/21-18-05
 //   }
 // ];
 
-function MovieTag({ tag }) {
-  return <div className="movie-tag">{tag}</div>
-}
-
-function MovieCard({ id, title, tags, synopsis, distance }) {
-  const distancePercentage = distance * 100
-
-  return <div className="movie-card">
-    <h2 className="movie-title">
-      <div className="movie-title-background" style={{ width: `${distancePercentage}%` }}>Match: {distancePercentage}%</div>
-      <a href={`https://www.imdb.com/title/${id}`} target="_blank" rel="noopener noreferrer">
-        {title}
-      </a>
-    </h2>
-    <div className="movie-tags">
-      {tags.map((tag, index) => (
-        <MovieTag key={index} tag={tag} />
-      ))}
-    </div>
-    <div className="movie-synopsis">{synopsis}</div>
-  </div>
-}
-
-function LoadingIndicator() {
-  return <div className="loading-indicator">
-    <img
-      src={LOADING_URL}
-      width="20"
-      height="20"
-    />
-    <p className="loading">Loading...</p>
-  </div>
-}
-
 function App() {
-  const [moviesCollection, setMoviesCollection] = react.useState(null)
   const [queryText, setQueryText] = react.useState("")
   const [moviesList, setMoviesList] = react.useState([])
-  const [hasChromaConnection, setHasChromaConnection] = react.useState(false)
   const [isLoading, setIsLoading] = react.useState(false)
-
-  react.useEffect(() => {
-    const initializeChroma = async () => {
-      const chromaClient = new ChromaClient()
-
-      const collection = await chromaClient.getCollection({
-        name: "movies",
-        space: "cosine",
-      })
-
-      setMoviesCollection(collection)
-      setHasChromaConnection(true)
-    }
-
-    initializeChroma()
-  }, [])
-
+  const [hasChromaConnection, moviesCollection] = useChroma()
+  const [error, setError] = react.useState(null)
 
   async function queryMovies() {
     setIsLoading(true)
 
-    const result = await moviesCollection.query({ queryTexts: [queryText]})
+    try{
+      const movies = await getMovies(moviesCollection, queryText)
 
-    const distances = result.distances[0].map((distance) => (((1 - distance) + 1) / 2).toFixed(2))
+      setMoviesList(movies)
+    } catch (err) {
+      setError(err.toString())
 
-    console.log("Distances (result):", result.distances[0])
-    console.log("Distances:", distances)
-
-    const movies =[]
-    for(let i = 0; i < result.ids[0].length; i++) {
-      movies.push({
-        id: result.ids[0][i],
-        distance: distances[i],
-        title: result.metadatas[0][i].title,
-        tags: result.metadatas[0][i].tags.split(", "),
-        synopsis: result.metadatas[0][i].synopsis,
-      })
+      setTimeout(() => {
+        setError(null)
+      }, 5000)
+    } finally {
+      setIsLoading(false)
     }
-
-    console.log("Movies found:", movies)
-
-    setMoviesList(movies)
-    setIsLoading(false)
   }
 
   return (
@@ -155,6 +99,10 @@ function App() {
 
       {
         isLoading && <LoadingIndicator />
+      }
+
+      {
+        error && <ErrorIndicator error={error} />
       }
 
       <div className="movie-list">

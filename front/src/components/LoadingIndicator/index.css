@@ -1,0 +1,13 @@
+.loading-indicator {
+  align-items: center;
+  display: flex;
+  gap: 0.5em;
+  justify-content: center;
+  padding: 1em;
+}
+
+.loading {
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
