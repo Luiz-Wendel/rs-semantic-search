@@ -22,8 +22,8 @@ fs.createReadStream("mpst_full_data.csv")
       title: title,
       tags: tags,
       synopsis: plot_synopsis,
-    }
-    
+    };
+
     ids.push(imdb_id);
     documents.push(JSON.stringify(document));
     metadatas.push(document);

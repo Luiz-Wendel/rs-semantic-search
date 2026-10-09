@@ -26,7 +26,9 @@
   },
   "dependencies": {
     "@chroma-core/default-embed": "^0.1.9",
+    "@google/genai": "^2.28.0",
     "chromadb": "^3.5.0",
-    "csv-parser": "^3.2.1"
+    "csv-parser": "^3.2.1",
+    "dotenv": "^18.0.6"
   }
 }
