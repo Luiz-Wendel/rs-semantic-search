@@ -3,7 +3,7 @@ import MovieTag from '../MovieTag'
 import './index.css'
 
 function MovieCard({ id, title, tags, synopsis, distance }) {
-  const distancePercentage = distance * 100
+  const distancePercentage = Math.round(distance * 100)
   const imdbUrl = `https://www.imdb.com/title/${id}`
 
   return <div className="movie-card">

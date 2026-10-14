@@ -150,3 +150,7 @@ vite.config.ts.timestamp-*
 
 # ChromaDB
 chroma/
+
+# files
+data_loader/mpst_full_data.csv
+data_loader/gemini_embeddings.json

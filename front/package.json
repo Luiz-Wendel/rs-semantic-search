@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@chroma-core/default-embed": "^0.1.9",
+    "@google/genai": "^2.28.0",
     "chromadb": "^3.5.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

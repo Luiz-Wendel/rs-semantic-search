@@ -1,5 +1,36 @@
-async function getMovies(moviesCollection, queryText) {
-  const result = await moviesCollection.query({ queryTexts: [queryText]})
+import { GoogleGenAI } from "@google/genai"
+
+async function queryText(collection, query) {
+  return collection.query({ queryTexts: [query]})
+}
+
+async function queryEmbedding(collection, query) {
+  const genai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY })
+
+  const response = await genai.models.embedContent({
+    model: "gemini-embedding-2",
+    contents: query,
+    config: {
+      taskType: "RETRIEVAL_QUERY",
+      outputDimensionality: 768,
+    },
+  });
+
+  const embedding = response.embeddings[0].values;
+
+  return collection.query({ queryEmbeddings: [embedding]})
+}
+
+async function getMovies(moviesCollection, query) {
+  let result;
+
+  switch (moviesCollection.name) {
+    case "movies_gemini":
+      result = await queryEmbedding(moviesCollection, query)
+      break
+    default:
+      result = await queryText(moviesCollection, query)
+  }
 
   const distances = result.distances[0].map((distance) => (((1 - distance) + 1) / 2).toFixed(2))
 

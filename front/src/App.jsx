@@ -63,11 +63,13 @@ import './App.css'
 //   }
 // ];
 
+const CHROMA_COLLECTION_NAME = "movies_gemini" // movies || movies_gemini
+
 function App() {
   const [queryText, setQueryText] = react.useState("")
   const [moviesList, setMoviesList] = react.useState([])
   const [isLoading, setIsLoading] = react.useState(false)
-  const [hasChromaConnection, moviesCollection] = useChroma()
+  const [hasChromaConnection, moviesCollection] = useChroma(CHROMA_COLLECTION_NAME)
   const [error, setError] = react.useState(null)
 
   async function queryMovies() {

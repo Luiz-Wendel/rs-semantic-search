@@ -2,7 +2,7 @@ import react from 'react'
 
 import { ChromaClient } from "chromadb"
 
-function useChroma() {
+function useChroma(collectionName) {
     const [hasChromaConnection, setHasChromaConnection] = react.useState(false)
     const [moviesCollection, setMoviesCollection] = react.useState(null)
 
@@ -11,7 +11,7 @@ function useChroma() {
         const chromaClient = new ChromaClient()
 
         const collection = await chromaClient.getCollection({
-          name: "movies",
+          name: collectionName,
           space: "cosine",
         })
 

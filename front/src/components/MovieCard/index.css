@@ -32,6 +32,7 @@
   height: 0.5em;
   margin-bottom: 0.25em;
   padding: 0.5em 0.25em;
+  text-wrap: nowrap;
 }
 
 .movie-tags {
